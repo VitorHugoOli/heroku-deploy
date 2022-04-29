@@ -25,11 +25,11 @@ const addRemote = ({ app_name, dontautocreate, buildpack, region, team, stack })
 
     execSync(
       "heroku create " +
-        app_name +
-        (buildpack ? " --buildpack " + buildpack : "") +
-        (region ? " --region " + region : "") +
-        (stack ? " --stack " + stack : "") +
-        (team ? " --team " + team : "")
+      app_name +
+      (buildpack ? " --buildpack " + buildpack : "") +
+      (region ? " --region " + region : "") +
+      (stack ? " --stack " + stack : "") +
+      (team ? " --team " + team : "")
     );
   }
 };
@@ -64,14 +64,14 @@ const createProcfile = ({ procfile, appdir }) => {
 };
 
 const deploy = ({
-  dontuseforce,
-  app_name,
-  branch,
-  usedocker,
-  dockerHerokuProcessType,
-  dockerBuildArgs,
-  appdir,
-}) => {
+                  dontuseforce,
+                  app_name,
+                  branch,
+                  usedocker,
+                  dockerHerokuProcessType,
+                  dockerBuildArgs,
+                  appdir
+                }) => {
   const force = !dontuseforce ? "--force" : "";
   if (usedocker) {
     execSync(
@@ -96,7 +96,7 @@ const deploy = ({
 
     if (appdir === "") {
       execSync(`git push heroku ${branch}:refs/heads/main ${force}`, {
-        maxBuffer: 104857600,
+        maxBuffer: 104857600
       });
     } else {
       execSync(
@@ -108,10 +108,10 @@ const deploy = ({
 };
 
 const healthcheckFailed = ({
-  rollbackonhealthcheckfailed,
-  app_name,
-  appdir,
-}) => {
+                             rollbackonhealthcheckfailed,
+                             app_name,
+                             appdir
+                           }) => {
   if (rollbackonhealthcheckfailed) {
     execSync(
       `heroku rollback --app ${app_name}`,
@@ -125,6 +125,15 @@ const healthcheckFailed = ({
       "Health Check Failed. Error deploying Server. Please check your logs on Heroku to try and diagnose the problem"
     );
   }
+};
+
+const getHerokuUrl = (heroku) => {
+  const output = execSync(
+    `heroku apps:info --app ${heroku.app_name}`
+  ).toString();
+  const url = output.match(/web url: (.*)/)[1];
+  process.env.HEROKU_URL = url;
+  execSync(`echo "::set-env url=HEROKU_URL::${url}"`);
 };
 
 // Input Variables
@@ -150,7 +159,7 @@ let heroku = {
   justlogin: core.getInput("justlogin") === "false" ? false : true,
   region: core.getInput("region"),
   stack: core.getInput("stack"),
-  team: core.getInput("team"),
+  team: core.getInput("team")
 };
 
 // Formatting
@@ -159,8 +168,8 @@ if (heroku.appdir) {
     heroku.appdir[0] === "." && heroku.appdir[1] === "/"
       ? heroku.appdir.slice(2)
       : heroku.appdir[0] === "/"
-      ? heroku.appdir.slice(1)
-      : heroku.appdir;
+        ? heroku.appdir.slice(1)
+        : heroku.appdir;
 }
 
 // Collate docker build args into arg list
@@ -190,7 +199,7 @@ if (heroku.dockerBuildArgs) {
     const status = execSync("git status --porcelain").toString().trim();
     if (status) {
       execSync(
-        'git add -A && git commit -m "Commited changes from previous actions"'
+        "git add -A && git commit -m \"Commited changes from previous actions\""
       );
     }
 
@@ -232,6 +241,8 @@ if (heroku.dockerBuildArgs) {
       deploy(heroku);
     }
 
+    getHerokuUrl(heroku);
+
     if (heroku.healthcheck) {
       if (typeof heroku.delay === "number" && heroku.delay !== NaN) {
         await sleep(heroku.delay * 1000);
@@ -242,7 +253,7 @@ if (heroku.dockerBuildArgs) {
         if (res.statusCode !== 200) {
           throw new Error(
             "Status code of network request is not 200: Status code - " +
-              res.statusCode
+            res.statusCode
           );
         }
         if (heroku.checkstring && heroku.checkstring !== res.body.toString()) {
