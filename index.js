@@ -135,9 +135,8 @@ const getHerokuUrl = (heroku) => {
     `heroku apps:info | grep 'Web URL' | cut -d':' -f3 | sed -e 's/^ *//g' -e 's/ *$//g'`
   ).toString();
   const url = "http:" + output.trimEnd().trimStart();
-  process.env.HEROKU_URL = url;
-  console.log(`echo "::set-output name=heroku-url::${url}"`);
-  execSync(`echo "::set-output name=heroku-url::${url}"`);
+  console.log(`url=${url}`);
+  core.setOutput("url", url);
 };
 
 // Input Variables
