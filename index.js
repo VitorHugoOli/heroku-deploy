@@ -136,6 +136,7 @@ const getHerokuUrl = (heroku) => {
   const url = output.match(/web url: (.*)/)[1];
   process.env.HEROKU_URL = url;
   execSync(`echo "::set-env url=HEROKU_URL::${url}"`);
+  console.log("Set HEROKU_URL");
 };
 
 // Input Variables
