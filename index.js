@@ -21,7 +21,7 @@ const addRemote = (heroku) => {
     execSync("heroku git:remote --app " + heroku.app_name);
     console.log("Added git remote heroku");
   } catch (err) {
-    if (dontautocreate) throw err;
+    if (heroku.dontautocreate) throw err;
     // replace app name / to _
     heroku.app_name = heroku.app_name.replace(/\//g, "_");
 
