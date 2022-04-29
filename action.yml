@@ -1,6 +1,5 @@
 name: "Deploy to Heroku"
 description: "Deploy an app to Heroku"
-id: deploy-heroku
 branding:
   icon: "upload-cloud"
   color: "purple"
@@ -85,7 +84,7 @@ inputs:
     required: false
     default: ""
 outputs:
-  url: ${{ steps.deploy-heroku.outputs.heroku-url }}
+  url: ${{ runs.steps[0].outputs.heroku-url }}
   status:
     description: "The Success/Failure of the action"
 runs:
