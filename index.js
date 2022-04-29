@@ -130,6 +130,7 @@ const healthcheckFailed = ({
 };
 
 const getHerokuUrl = (heroku) => {
+  console.log("Starting Heroku deployment");
   const output = execSync(
     `heroku apps:info --app ${heroku.app_name}`
   ).toString();
