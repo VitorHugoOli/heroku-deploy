@@ -17,13 +17,14 @@ machine git.heroku.com
 EOF`;
 
 const addRemote = (heroku) => {
+  // replace app name / to _
+  heroku.app_name = heroku.app_name.replace(/\//g, "-").toLowerCase();
+
   try {
     execSync("heroku git:remote --app " + heroku.app_name);
     console.log("Added git remote heroku");
   } catch (err) {
     if (heroku.dontautocreate) throw err;
-    // replace app name / to _
-    heroku.app_name = heroku.app_name.replace(/\//g, "-").toLowerCase();
 
     execSync(
       "heroku create " +
