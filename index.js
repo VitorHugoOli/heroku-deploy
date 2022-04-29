@@ -133,9 +133,11 @@ const healthcheckFailed = ({
 const getHerokuUrl = (heroku) => {
   console.log("Starting Heroku deployment");
   const output = execSync(
-    `heroku apps:info --app ${heroku.app_name}`
+    `heroku apps:info | grep 'Web URL' | cut -d':' -f3 | sed -e 's/^ *//g'`
   ).toString();
-  const url = output.match(/web url: (.*)/)[1];
+  console.log("Heroku URL: " + output);
+  const url = "http:" + output;
+  console.log("Heroku URL: " + url);
   process.env.HEROKU_URL = url;
   execSync(`echo "::set-env url=HEROKU_URL::${url}"`);
   console.log("Set HEROKU_URL");
