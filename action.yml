@@ -84,7 +84,9 @@ inputs:
     required: false
     default: ""
 outputs:
-  url: ${{ steps.index.outputs.heroku-url }}
+  url:
+    description: "The URL of the deployed app"
+    value: ${{ steps.index.outputs.heroku-url }}
   status:
     description: "The Success/Failure of the action"
 runs:
@@ -92,3 +94,4 @@ runs:
   steps:
     - id: "index"
       run: "index.js"
+      shell: bash
