@@ -41,8 +41,8 @@ const deployGit = async (heroku: IHeroku, shouldThrowError = false) => {
     ? `\`git subtree split --prefix=${heroku.appdir} ${heroku.branch}\``
     : heroku.branch
   try {
-    const output = await asyncExec(
-      `git push ${force} heroku ${finalBranch}:refs/head/main`, 
+    const output = asyncExec(
+      `git push ${force} heroku ${finalBranch}:refs/head/main`,
       { maxBuffer: 104857600 }
     ).toString();
     if (output.toLowerCase().includes(SKIPPED_WRONG_BRANCH)) {
@@ -51,6 +51,7 @@ const deployGit = async (heroku: IHeroku, shouldThrowError = false) => {
         (Heroku only allows this branch to be deployed)
       `);
     }
+
   } catch (err) {
     if (shouldThrowError) {
       throw err;
@@ -74,10 +75,22 @@ export const deploy = async (heroku: IHeroku) => {
     /* STEP */ await fixRemoteBranch(heroku) 
     /* STEP */ await deployGit({...heroku, dontuseforce: false}) 
     /* STEP */ await deployGit(heroku, true)
+    /* STEP */ await getHerokuUrl(heroku);
 
     logger.success(ACTION);
   } catch (err) {
     logger.failure(ACTION);
     throw err;
   }
+}
+
+
+// Create a private function to be used in the pipeline, to get the url from the heroku output and create a context env variable to github actions
+const getHerokuUrl = async (heroku: IHeroku) => {
+  const output = asyncExec(
+    `heroku apps:info --app ${heroku.app_name}`
+  ).toString();
+  const url = output.match(/web url: (.*)/)[1];
+  process.env.HEROKU_URL = url;
+  await asyncExec(`echo "::set-env url=HEROKU_URL::${url}"`);
 }
