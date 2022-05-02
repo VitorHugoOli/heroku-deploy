@@ -104,7 +104,7 @@ const deploy = ({
     }
 
     if (appdir === "") {
-      execSync(`git push heroku ${branch} ${force}`, {
+      execSync(`git push heroku ${branch}:master ${force}`, {
         maxBuffer: 104857600
       });
     } else {
