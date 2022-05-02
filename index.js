@@ -113,12 +113,12 @@ const deploy = ({
     }
 
     if (appdir === "") {
-      execSync(`git push heroku ${branch}:refs/heads/main ${force}`, {
+      execSync(`git push heroku ${app_name}:refs/heads/main ${force}`, {
         maxBuffer: 104857600
       });
     } else {
       execSync(
-        `git push ${force} heroku \`git subtree split --prefix=${appdir} ${branch}\`:refs/heads/main`,
+        `git push ${force} heroku \`git subtree split --prefix=${appdir} ${app_name}\`:refs/heads/main`,
         { maxBuffer: 104857600 }
       );
     }
