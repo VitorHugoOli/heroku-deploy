@@ -48,7 +48,7 @@ const addConfig = ({ app_name, env_file, appdir }) => {
   if (process.env && process.env.HEROKU_ENV_STAG) {
     const json_vr = JSON.parse(process.env.HEROKU_ENV_STAG)
 
-    console.log(json_vr)
+
   }
   if (env_file) {
     const env = fs.readFileSync(path.join(appdir, env_file), "utf8");
@@ -81,6 +81,15 @@ const deploy = ({
   dockerBuildArgs,
   appdir
 }) => {
+  console.log('Lucas', {
+    dontuseforce,
+    app_name,
+    branch,
+    usedocker,
+    dockerHerokuProcessType,
+    dockerBuildArgs,
+    appdir
+  })
   const force = !dontuseforce ? "--force" : "";
   if (usedocker) {
     execSync(
@@ -239,7 +248,7 @@ if (heroku.dockerBuildArgs) {
     addConfig(heroku);
 
     try {
-      deploy({ ...heroku, dontuseforce: true });
+      deploy({ ...heroku, dontuseforce: false });
     } catch (err) {
       console.error(`
             Unable to push branch because the branch is behind the deployed branch. Using --force to deploy branch. 
