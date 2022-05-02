@@ -81,15 +81,6 @@ const deploy = ({
   dockerBuildArgs,
   appdir
 }) => {
-  console.log('Lucas', {
-    dontuseforce,
-    app_name,
-    branch,
-    usedocker,
-    dockerHerokuProcessType,
-    dockerBuildArgs,
-    appdir
-  })
   const force = !dontuseforce ? "--force" : "";
   if (usedocker) {
     execSync(
@@ -113,12 +104,12 @@ const deploy = ({
     }
 
     if (appdir === "") {
-      execSync(`git push heroku ${app_name}:refs/heads/main ${force}`, {
+      execSync(`git push heroku ${branch}:main ${force}`, {
         maxBuffer: 104857600
       });
     } else {
       execSync(
-        `git push ${force} heroku \`git subtree split --prefix=${appdir} ${app_name}\`:refs/heads/main`,
+        `git push ${force} heroku \`git subtree split --prefix=${appdir} ${branch}\`:refs/heads/main`,
         { maxBuffer: 104857600 }
       );
     }
@@ -248,7 +239,7 @@ if (heroku.dockerBuildArgs) {
     addConfig(heroku);
 
     try {
-      deploy({ ...heroku, dontuseforce: false });
+      deploy({ ...heroku, dontuseforce: true });
     } catch (err) {
       console.error(`
             Unable to push branch because the branch is behind the deployed branch. Using --force to deploy branch. 
