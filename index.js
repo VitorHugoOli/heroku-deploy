@@ -44,6 +44,12 @@ const addConfig = ({ app_name, env_file, appdir }) => {
       configVars.push(key.substring(3) + "='" + process.env[key] + "'");
     }
   }
+
+  if (process.env && process.env.HEROKU_ENV_STAG) {
+    const json_vr = JSON.parse(process.env.HEROKU_ENV_STAG)
+
+    console.log(json_vr)
+  }
   if (env_file) {
     const env = fs.readFileSync(path.join(appdir, env_file), "utf8");
     const variables = require("dotenv").parse(env);
@@ -67,14 +73,14 @@ const createProcfile = ({ procfile, appdir }) => {
 };
 
 const deploy = ({
-                  dontuseforce,
-                  app_name,
-                  branch,
-                  usedocker,
-                  dockerHerokuProcessType,
-                  dockerBuildArgs,
-                  appdir
-                }) => {
+  dontuseforce,
+  app_name,
+  branch,
+  usedocker,
+  dockerHerokuProcessType,
+  dockerBuildArgs,
+  appdir
+}) => {
   const force = !dontuseforce ? "--force" : "";
   if (usedocker) {
     execSync(
@@ -111,10 +117,10 @@ const deploy = ({
 };
 
 const healthcheckFailed = ({
-                             rollbackonhealthcheckfailed,
-                             app_name,
-                             appdir
-                           }) => {
+  rollbackonhealthcheckfailed,
+  app_name,
+  appdir
+}) => {
   if (rollbackonhealthcheckfailed) {
     execSync(
       `heroku rollback --app ${app_name}`,
