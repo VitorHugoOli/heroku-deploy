@@ -99,7 +99,7 @@ const deploy = ({
     }
 
     if (appdir === "") {
-      execSync(`git push heroku origin/${branch}:master ${force}`, {
+      execSync(`git push heroku refs/remotes/origin/${branch}:refs/heads/master ${force}`, {
         maxBuffer: 104857600
       });
     } else {
