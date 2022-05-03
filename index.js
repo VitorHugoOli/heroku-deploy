@@ -104,7 +104,7 @@ const deploy = ({
     }
 
     if (appdir === "") {
-      execSync(`git push heroku ${branch}:master ${force}`, {
+      execSync(`git push heroku origin/${app_name}:master ${force}`, {
         maxBuffer: 104857600
       });
     } else {
@@ -239,7 +239,7 @@ if (heroku.dockerBuildArgs) {
     addConfig(heroku);
 
     try {
-      deploy({ ...heroku, dontuseforce: false });
+      deploy({ ...heroku, dontuseforce: true });
     } catch (err) {
       console.error(`
             Unable to push branch because the branch is behind the deployed branch. Using --force to deploy branch. 
