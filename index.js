@@ -45,11 +45,6 @@ const addConfig = ({ app_name, env_file, appdir }) => {
     }
   }
 
-  if (process.env && process.env.HEROKU_ENV_STAG) {
-    const json_vr = JSON.parse(process.env.HEROKU_ENV_STAG)
-
-
-  }
   if (env_file) {
     const env = fs.readFileSync(path.join(appdir, env_file), "utf8");
     const variables = require("dotenv").parse(env);
@@ -104,7 +99,7 @@ const deploy = ({
     }
 
     if (appdir === "") {
-      execSync(`git push heroku origin/${app_name}:master ${force}`, {
+      execSync(`git push heroku origin/${branch}:master ${force}`, {
         maxBuffer: 104857600
       });
     } else {
