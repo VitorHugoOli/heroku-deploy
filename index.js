@@ -40,21 +40,23 @@ const addRemote = (heroku) => {
 const addConfig = ({ app_name, env_file, appdir }) => {
   let configVars = [];
   for (let key in process.env) {
-    if (key.startsWith("HD_")) {
+    if (key.startsWith("INPUT_HEROKU_")) {
       configVars.push(key.substring(3) + "='" + process.env[key] + "'");
     }
   }
 
   console.log(process.env)
 
-  if (process.env && process.env.HEROKU_ENV_STAG) {
-    let json_p = JSON.parse(process.env.HEROKU_ENV_STAG)
+  if (process.env && process.env.INPUT_HEROKU_ENV_STAG) {
+    let json_p = JSON.parse(process.env.INPUT_HEROKU_ENV_STAG)
     let key = Object.keys(json_p)[0]
     let value = Object.values(json_p)[0]
     configVars.push(key + "='" + value + "'")
     console.log('k - v - json', key, value, json_p)
 
   }
+
+  console.log(configVars)
 
   if (env_file) {
     const env = fs.readFileSync(path.join(appdir, env_file), "utf8");
