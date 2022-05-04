@@ -45,6 +45,17 @@ const addConfig = ({ app_name, env_file, appdir }) => {
     }
   }
 
+  if (process.env && process.env.HEROKU_ENV_STAG) {
+    let json_p = JSON.parse(process.env.HEROKU_ENV_STAG)
+    let key = Object.keys(json_p)[0]
+    let value = Object.values(json_p)[0]
+    configVars.push(key + "='" + value + "'")
+    console.log('k - v - json', key, value, json_p)
+
+  }
+
+  console.log('configVars aqui', configVars)
+
   if (env_file) {
     const env = fs.readFileSync(path.join(appdir, env_file), "utf8");
     const variables = require("dotenv").parse(env);
@@ -99,7 +110,11 @@ const deploy = ({
     }
 
     if (appdir === "") {
-      execSync(`git push heroku refs/remotes/origin/${branch}:refs/heads/master ${force}`, {
+      let pushString = `git push heroku ${branch}:refs/heads/master ${force}`
+      if (branch.split('/')[0] !== 'refs') {
+        pushString = `git push heroku refs/remotes/origin/${branch}:refs/heads/master ${force}`
+      }
+      execSync(pushString, {
         maxBuffer: 104857600
       });
     } else {
