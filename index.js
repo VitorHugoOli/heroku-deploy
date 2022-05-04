@@ -41,26 +41,12 @@ const addConfig = ({ app_name, env_file, appdir }) => {
   let configVars = [];
   for (let key in process.env) {
     if (key.startsWith("INPUT_HEROKU_")) {
-      console.log('input_heroku', key)
-      configVars.push(key.substring(3) + "='" + process.env[key] + "'");
-    }
-    if (key.startsWith("HD_")) {
-      console.log('HD', key)
       configVars.push(key.substring(3) + "='" + process.env[key] + "'");
     }
   }
 
-  console.log('process.env && process.env.INPUT_HEROKU_ENV_STAG = ', process.env && process.env.INPUT_HEROKU_ENV_STAG)
-
   if (process.env && process.env.INPUT_HEROKU_ENV_STAG) {
-    let json_p = JSON.parse(process.env.INPUT_HEROKU_ENV_STAG)
-    let key = Object.keys(json_p)[0]
-    let value = Object.values(json_p)[0]
-    console.log('k - v - json', key, value, json_p)
-    console.log('k:j', key + "='" + value + "'")
-    console.log('k:j2', `'${key}'='${value}'`)
-    configVars.push(key + "='" + value + "'")
-
+    configVars.push('url_bd' + "='" + process.env.INPUT_HEROKU_ENV_STAG + "'")
   }
 
   console.log('confVars', configVars)
