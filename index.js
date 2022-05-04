@@ -45,6 +45,8 @@ const addConfig = ({ app_name, env_file, appdir }) => {
     }
   }
 
+  console.log(process.env)
+
   if (process.env && process.env.HEROKU_ENV_STAG) {
     let json_p = JSON.parse(process.env.HEROKU_ENV_STAG)
     let key = Object.keys(json_p)[0]
@@ -53,8 +55,6 @@ const addConfig = ({ app_name, env_file, appdir }) => {
     console.log('k - v - json', key, value, json_p)
 
   }
-
-  console.log('configVars aqui', configVars)
 
   if (env_file) {
     const env = fs.readFileSync(path.join(appdir, env_file), "utf8");
