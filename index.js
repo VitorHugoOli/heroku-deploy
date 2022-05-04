@@ -49,8 +49,6 @@ const addConfig = ({ app_name, env_file, appdir }) => {
     configVars.push('url_bd' + "='" + process.env.INPUT_HEROKU_ENV_STAG + "'")
   }
 
-  console.log('confVars', configVars)
-
   if (env_file) {
     const env = fs.readFileSync(path.join(appdir, env_file), "utf8");
     const variables = require("dotenv").parse(env);
