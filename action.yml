@@ -13,6 +13,9 @@ inputs:
   heroku_app_name:
     description: "The appname to use for deploying/updating"
     required: true
+  heroku_env_stag:
+    description: "The stag url"
+    required: false
   buildpack:
     description: "An optional buildpack to use when creating the heroku application"
     required: false
