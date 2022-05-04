@@ -162,7 +162,7 @@ let heroku = {
   api_key: core.getInput("heroku_api_key"),
   email: core.getInput("heroku_email"),
   app_name: core.getInput("heroku_app_name"),
-  heroku_env_stag: core.getInput("heroku_env_stag"),
+  stag: core.getInput("heroku_env_stag"),
   buildpack: core.getInput("buildpack"),
   branch: core.getInput("branch"),
   dontuseforce: core.getInput("dontuseforce") === "false" ? false : true,
