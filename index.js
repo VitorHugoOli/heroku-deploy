@@ -80,7 +80,7 @@ const deploy = ({
   dockerBuildArgs,
   appdir
 }) => {
-  const force = !dontuseforce ? "--force" : "";
+  const force = !dontuseforce ? "" : "--force";
   if (usedocker) {
     execSync(
       `heroku container:push ${dockerHerokuProcessType} --app ${app_name} ${dockerBuildArgs}`,
