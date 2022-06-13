@@ -17,7 +17,7 @@ machine git.heroku.com
 EOF`;
 
 const addRemote = (heroku) => {
-  const force = !dontuseforce ? "--force" : "";
+  const force = !heroku.dontuseforce ? "--force" : "";
   // replace app name / to _
   heroku.app_name = heroku.app_name.replace(/\//g, "-").toLowerCase();
 
