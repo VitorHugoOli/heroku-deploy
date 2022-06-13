@@ -35,7 +35,7 @@ const addRemote = (heroku) => {
       (heroku.stack ? " --stack " + heroku.stack : "") +
       (heroku.team ? " --team " + heroku.team : "")
     );*/
-    execSync(`git push heroku ${heroku.branch}:refs/heads/master ${force}`)
+    execSync(`git push heroku ${heroku.branch}:master ${force}`)
   }
 };
 
