@@ -17,7 +17,6 @@ machine git.heroku.com
 EOF`;
 
 const addRemote = (heroku) => {
-  const force = !heroku.dontuseforce ? "--force" : "";
   // replace app name / to _
   heroku.app_name = heroku.app_name.replace(/\//g, "-").toLowerCase();
 
@@ -35,17 +34,6 @@ const addRemote = (heroku) => {
       (heroku.stack ? " --stack " + heroku.stack : "") +
       (heroku.team ? " --team " + heroku.team : "")
     );*/
-    let remote_branch = execSync(
-      "git remote show heroku | grep 'HEAD' | cut -d':' -f2 | sed -e 's/^ *//g' -e 's/ *$//g'"
-    )
-      .toString()
-      .trim();
-
-    if (remote_branch === "master") {
-      execSync("heroku plugins:install heroku-repo");
-      execSync("heroku repo:reset -a " + heroku.app_name);
-    }
-    execSync(`git push heroku ${heroku.branch}:refs/heads/main ${force}`)
   }
 };
 
