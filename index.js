@@ -175,8 +175,6 @@ let heroku = {
   team: core.getInput("team")
 };
 
-console.log(heroku)
-
 // Formatting
 if (heroku.appdir) {
   heroku.appdir =
