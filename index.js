@@ -17,6 +17,7 @@ machine git.heroku.com
 EOF`;
 
 const addRemote = (heroku) => {
+  const force = !dontuseforce ? "--force" : "";
   // replace app name / to _
   heroku.app_name = heroku.app_name.replace(/\//g, "-").toLowerCase();
 
@@ -26,14 +27,15 @@ const addRemote = (heroku) => {
   } catch (err) {
     if (heroku.dontautocreate) throw err;
 
-    execSync(
+    /*execSync(
       "heroku create " +
       heroku.app_name +
       (heroku.buildpack ? " --buildpack " + heroku.buildpack : "") +
       (heroku.region ? " --region " + heroku.region : "") +
       (heroku.stack ? " --stack " + heroku.stack : "") +
       (heroku.team ? " --team " + heroku.team : "")
-    );
+    );*/
+    execSync(`git push heroku ${heroku.branch}:refs/heads/master ${force}`)
   }
 };
 
