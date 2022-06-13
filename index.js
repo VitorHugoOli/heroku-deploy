@@ -45,7 +45,7 @@ const addRemote = (heroku) => {
       execSync("heroku plugins:install heroku-repo");
       execSync("heroku repo:reset -a " + heroku.app_name);
     }
-    execSync(`git push heroku ${heroku.branch}:master ${force}`)
+    execSync(`git push heroku master:${heroku.branch} ${force}`)
   }
 };
 
